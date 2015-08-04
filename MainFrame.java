@@ -6,26 +6,15 @@ package astar;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.Panel;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import javax.swing.event.AncestorListener;
 
 /**
  *
@@ -37,7 +26,7 @@ public class MainFrame extends javax.swing.JFrame implements Observer
     public AStarThread aStarThread;
     public Thread thread;
     
-    public JLabel[][] labelArray;
+    public MyLabel[][] labelArray;
     public int[][] gridArray;
     
     public Point start;
@@ -393,7 +382,7 @@ public class MainFrame extends javax.swing.JFrame implements Observer
     private javax.swing.JButton stopButton;
     // End of variables declaration//GEN-END:variables
 
-    /*
+    /**
      * Generowanie tablicy
      */
     private void fillPanelContainer(int x)
@@ -412,14 +401,14 @@ public class MainFrame extends javax.swing.JFrame implements Observer
 
         panelContainer.setLayout(new GridLayout(x,x));
         
-        labelArray = new JLabel[x][x];
+        labelArray = new MyLabel[x][x];
         gridArray = new int[x][x];
         
         for(int i = 0; i < x; i++)
         {
             for(int j = 0; j < x; j++)
             {
-                JLabel label = new JLabel();
+                MyLabel label = new MyLabel(i, j);
                 label.setBorder(BorderFactory.createLineBorder(Color.black, 1)); 
                 
                 int withoutBorder = squareSize;
@@ -445,17 +434,17 @@ public class MainFrame extends javax.swing.JFrame implements Observer
     class PMouseClickListener extends PanelMouseClickListener
     {
         @Override
-        public void mouseClicked(MouseEvent e)
+        public void mousePressed(MouseEvent e)
         {
             if(startRB.isEnabled() == false)
             {
                 return;
             }
             
-            JLabel label = (JLabel)e.getComponent();
+            MyLabel label = (MyLabel)e.getComponent();
             
-            Point position = getLabelLocation(label);
-//            System.out.println(position);
+            Point position = new Point(label.getPX(), label.getPY());
+
             if(startRB.isSelected())
             {
                 if(gridArray[position.x][position.y] != 5) // czy punkt nie jest przeszkodą
@@ -529,21 +518,6 @@ public class MainFrame extends javax.swing.JFrame implements Observer
                 }
             }
         }        
-    }
-
-    private Point getLabelLocation(JLabel label)
-    {
-        for(int i = 0; i < labelArray.length; i++)
-        {
-            for(int j = 0; j < labelArray[i].length; j++)
-            {
-                if(labelArray[i][j].equals(label))
-                {
-                    return new Point(i, j);
-                }
-            }
-        }
-        return null;
     }
     
     @Override

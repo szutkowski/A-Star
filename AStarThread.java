@@ -8,9 +8,7 @@ import java.awt.Color;
 import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Observable;
-import java.util.Observer;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 /**
@@ -26,7 +24,7 @@ public class AStarThread extends Observable implements Runnable{
     //opoznienie w dzialaniu
     protected int delay = 0;
     
-    private JLabel[][] labelArray;
+    private MyLabel[][] labelArray;
     
     public boolean isPaused = false;
     public boolean isStopped = false;
@@ -44,7 +42,7 @@ public class AStarThread extends Observable implements Runnable{
     public ArrayList<Point> openList = new ArrayList<>();
     public ArrayList<Point> closedList = new ArrayList<>();
 
-    public AStarThread(MainFrame frame, Point start, Point meta, JLabel[][] labelArray, int[][] gridArray, int delay)
+    public AStarThread(MainFrame frame, Point start, Point meta, MyLabel[][] labelArray, int[][] gridArray, int delay)
     {
         this.frame = frame;
         this.start = start;
@@ -88,11 +86,10 @@ public class AStarThread extends Observable implements Runnable{
             count++;
             
         }
-//        System.out.println("Operation count: " + count);
+
         if(targetFound == false)
         {
             JOptionPane.showMessageDialog(frame, "Way has not been found!", "", JOptionPane.ERROR_MESSAGE);
-//            System.out.println("Way has not been found!");
         }
         else
         {
@@ -103,7 +100,7 @@ public class AStarThread extends Observable implements Runnable{
         }
     }
       
-    /*
+    /**
      * Liczenie odlgelosci f(n) = g(n) + h(n)
      */
     private float Euklides(Point point)
@@ -124,7 +121,7 @@ public class AStarThread extends Observable implements Runnable{
          return distance;
     }
     
-    /*
+    /**
      * Wypełnia drogę liczbą 3 w tablicy grid
      */
     private void fillWay(Point point)
@@ -149,7 +146,7 @@ public class AStarThread extends Observable implements Runnable{
         }
     }
     
-    /*
+    /**
      * sets all 3 from grid to 0
      */
     private void resetWay()
@@ -179,7 +176,7 @@ public class AStarThread extends Observable implements Runnable{
         }
     }
     
-    /*
+    /**
      * Zapisuje trasę do pliku(3 - trasa, 5 - przeszkoda)
      */
     private void saveResult()
@@ -259,7 +256,7 @@ public class AStarThread extends Observable implements Runnable{
         }
     }
     
-    /*
+    /**
      * dodawanie elementow sasiadujacych do otwartej listy
      */
     private void goToSibling(int x, int y, Point parent)
@@ -281,7 +278,7 @@ public class AStarThread extends Observable implements Runnable{
         }        
     }
     
-    /*
+    /**
      * Metoda dodaje punkt do otwartej listy
      * Sprawdza i rozwiązuje konflikty
      */
@@ -311,7 +308,7 @@ public class AStarThread extends Observable implements Runnable{
         openList.add(point);
     }
     
-    /*
+    /**
      * Metoda dodaje punkty do lizty zamknietej
      */
     private void addToCloseList(Point point)
@@ -334,7 +331,7 @@ public class AStarThread extends Observable implements Runnable{
         closedList.add(point);
     }
     
-    /*
+    /**
      * Zwraca najwcześniejsze wystapienie punktu z dana wartością
      */
     private Point findLastOccuredValue(float value)
@@ -349,7 +346,7 @@ public class AStarThread extends Observable implements Runnable{
         return null;
     }
     
-    /*
+    /**
      * sprawdza czy lista zamknięta zawiera dany punkt
      */
     private boolean closeContains(Point point)
@@ -364,7 +361,7 @@ public class AStarThread extends Observable implements Runnable{
         return false;
     }
     
-    /*
+    /**
      * sprawdza czy lista otwarta zawiera dany punkt
      */    
     private boolean openContains(Point point)
@@ -379,7 +376,7 @@ public class AStarThread extends Observable implements Runnable{
         return false;
     }
     
-    /*
+    /**
      * usuwa punkt z listy otwartej
      */
     private void removeFromOpen(Point point)
@@ -394,7 +391,7 @@ public class AStarThread extends Observable implements Runnable{
         }
     }
     
-    /*
+    /**
      * zwraca punkt z najmniejszą wartością z listy otwartej
      */
     private Point getSmallestFromOpen()
